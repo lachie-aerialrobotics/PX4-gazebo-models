@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <model name='tricopter'>
+   <include merge='true'>
+      <uri>model://tricopter_base</uri>
+      <pose>0 0 0 0 0 0</pose>
+      <name>tricopter_base</name>
+    </include>
+    <include>
+      <uri>model://stewart_platform</uri>
+      <pose>0.31 0 0.34 1.5708 0 1.5708</pose>
+      <name>stewart_platform</name>
+    </include>
+    <joint name="stewart_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>stewart_platform::link</child>
+      <pose relative_to="base_link">0 0 0 0 0 0</pose>
+    </joint>
+  </model>
+</sdf>

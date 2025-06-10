@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <model name='tricopter_lidar'>
+  <plugin name='rgl::RGLServerPluginManager' filename='RGLServerPluginManager'>
+      <do_ignore_entities_in_lidar_link>true</do_ignore_entities_in_lidar_link>
+    </plugin>
+   <include merge='true'>
+      <uri>model://tricopter</uri>
+    </include>
+    <include>
+      <uri>model://mid360_lidar</uri>
+      <pose relative_to="base_link">0 0 0.1 0 0 0</pose>
+      <name>mid360_lidar</name>
+    </include>
+    <joint name="lidar_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>mid360_lidar::lidar_link</child>
+      <pose relative_to="base_link">0 0 0 0 0 0</pose>
+    </joint>
+    </model>
+</sdf>

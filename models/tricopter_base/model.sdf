@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <model name='tricopter_base'>
+    <pose>0 0 .24 0 0 0</pose>
+    <self_collide>false</self_collide>
+    <static>false</static>
+    <link name='base_link'>
+      <pose>0 0 0.185 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>8.</mass>
+        <inertia>
+          <ixx>0.2899999884</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.2899999884</iyy>
+          <iyz>0</iyz>
+          <izz>0.49999998</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='base_link_inertia_visual'>
+        <pose>-0.835 -0.775 -0.65 0 0 0</pose>
+        <geometry>
+        <mesh>
+        <uri>model://tricopter_base/meshes/hex_mesh.dae</uri>
+        <scale> 0.001 0.001 0.001 </scale>
+        </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0.175 0.175 0.175 1</ambient>
+          <diffuse>0.175 0.175 0.175 1</diffuse>
+          <specular>0.175 0.175 0.175 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='base_link_collision'>
+        <pose>0.07 0 -0.1 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.4 0.4 0.37 </size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <min_depth>0.001</min_depth>
+              <max_vel>0</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <sensor name="air_pressure_sensor" type="air_pressure">
+        <always_on>1</always_on>
+        <update_rate>50</update_rate>
+        <air_pressure>
+          <!-- Noise modeled after BMP390 -->
+          <pressure>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>3</stddev>
+            </noise>
+          </pressure>
+        </air_pressure>
+      </sensor>
+      <sensor name="magnetometer_sensor" type="magnetometer">
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <magnetometer>
+          <!-- TODO: update to fix units and coordinate system when we move past Harmonic -->
+          <!-- See https://github.com/gazebosim/gz-sim/pull/2460 -->
+          <!-- 3mgauss RMS: NOTE: noise is in tesla but sensor reports data in gauss -->
+          <!-- Noise modeled after IIS2MDC -->
+          <x>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <stddev>0.0001</stddev>
+            </noise>
+          </z>
+        </magnetometer>
+      </sensor>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>1</always_on>
+        <update_rate>250</update_rate>
+        <imu>
+          <angular_velocity>
+            <!-- Noise modeled after IIM42653 -->
+            <!-- 0.05 deg/s converted to rad/s -->
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0008726646</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0008726646</stddev>
+              </noise>
+            </y>
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.0008726646</stddev>
+              </noise>
+            </z>
+          </angular_velocity>
+          <linear_acceleration>
+            <!-- Noise modeled after IIM42653 -->
+            <!-- X & Y axis: 0.65 mg-rms converted to m/ss -->
+            <x>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.00637</stddev>
+              </noise>
+            </x>
+            <y>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.00637</stddev>
+              </noise>
+            </y>
+            <!-- Z axis: 0.70 mg-rms converted to m/ss-->
+            <z>
+              <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>0.00686</stddev>
+              </noise>
+            </z>
+          </linear_acceleration>
+        </imu>
+      </sensor>
+      <sensor name="navsat_sensor" type="navsat">
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+      </sensor>
+    </link>
+    <link name='rotor_0'>
+      <pose>0.2021534554521046 -0.3509401379847765 0.245 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_0_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_cw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='rotor01_collision'>
+      <pose>0 0 -0.06 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.3</radius>
+          <length>0.12</length>
+        </cylinder>
+      </geometry>
+      <surface>
+        <contact>
+          <ode>
+            <min_depth>0.001</min_depth>
+            <max_vel>0</max_vel>
+          </ode>
+        </contact>
+        <friction>
+          <ode/>
+        </friction>
+      </surface>
+    </collision>
+    </link>
+    <link name='rotor_1'>
+      <pose>0.2021534554521046 -0.3509401379847765 0.125 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_1_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_ccw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+    </link>
+    <link name='rotor_2'>
+      <pose>-0.40499992887425096 0.00024002468981527882 0.245 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_2_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_cw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='rotor23_collision'>
+      <pose>0 0 -0.06 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.3</radius>
+          <length>0.12</length>
+        </cylinder>
+      </geometry>
+      <surface>
+        <contact>
+          <ode>
+            <min_depth>0.001</min_depth>
+            <max_vel>0</max_vel>
+          </ode>
+        </contact>
+        <friction>
+          <ode/>
+        </friction>
+      </surface>
+    </collision>
+    </link>
+    <link name='rotor_3'>
+      <pose>-0.40499992887425096 0.00024002468981527882 0.125 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_3_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_ccw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+    </link>
+    <link name='rotor_4'>
+      <pose>0.2025692852118133 0.3507002775715683 0.245 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_4_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_cw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+      <collision name='rotor45_collision'>
+      <pose>0 0 -0.06 0 0 0</pose>
+      <geometry>
+        <cylinder>
+          <radius>0.3</radius>
+          <length>0.12</length>
+        </cylinder>
+      </geometry>
+      <surface>
+        <contact>
+          <ode>
+            <min_depth>0.001</min_depth>
+            <max_vel>0</max_vel>
+          </ode>
+        </contact>
+        <friction>
+          <ode/>
+        </friction>
+      </surface>
+    </collision>
+    </link>
+    <link name='rotor_5'>
+      <pose>0.2025692852118133 0.3507002775715683 0.125 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.047</mass>
+        <inertia>
+          <ixx>1.0183332926000001e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00101114229288764</iyy>
+          <iyz>0</iyz>
+          <izz>0.00102054229251164</izz>
+        </inertia>
+      </inertial>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <visual name='rotor_5_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://tricopter_base/meshes/dji_13455_prop_ccw.dae</uri>
+            <scale>1.4 1.4 1.4</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+          <shader type='pixel'>
+            <normal_map>__default__</normal_map>
+          </shader>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+        <transparency>0</transparency>
+        <cast_shadows>1</cast_shadows>
+      </visual>
+    </link>
+    <joint name='rotor_0_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_0</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+          <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <joint name='rotor_1_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+        <spring_reference>0</spring_reference>
+        <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <joint name='rotor_2_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+        <spring_reference>0</spring_reference>
+        <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <joint name='rotor_3_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_3</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+        <spring_reference>0</spring_reference>
+        <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <joint name='rotor_4_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_4</child>
+      <pose>0 0 0 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+        <spring_reference>0</spring_reference>
+        <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <joint name='rotor_5_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>rotor_5</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort> -->
+          <!-- <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+        <spring_reference>0</spring_reference>
+        <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <!-- <use_parent_model_frame>1</use_parent_model_frame> -->
+      </axis>
+    </joint>
+    <allow_auto_disable>1</allow_auto_disable>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_4_joint</jointName>
+      <linkName>rotor_4</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>4</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_5_joint</jointName>
+      <linkName>rotor_5</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000</maxRotVelocity>
+      <motorConstant>6.542e-05</motorConstant>
+      <momentConstant>0.2155</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>5</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+  </model>
+</sdf>
